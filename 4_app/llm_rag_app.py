@@ -6,7 +6,7 @@ from pymilvus import connections, Collection
 import utils.model_llm_utils as model_llm
 import utils.vector_db_utils as vector_db
 import utils.model_embedding_utils as model_embedding
-
+import re
 
 def main():
     # Configure gradio QA app 
@@ -81,11 +81,17 @@ def get_nearest_chunk_from_vectordb(vector_db_collection, question):
 
     # Extracting the text value
     text_value = entity_dict['text']
-    print(text_value)
 
+    # Define a regular expression pattern to match non-standard characters (e.g., '6' and 'ﬀ')
+    pattern = r'[^\x00-\x7F]+'
+
+    # Use re.sub to replace non-standard characters with an empty string
+    cleaned_text = re.sub(pattern, '', text_value)
+
+    print(cleaned_text)
     
     # Return text of the nearest knowledgebase chunk
-    return text_value
+    return cleaned_text
   
 # Return the Knowledge Base doc based on Knowledge Base ID (relative file path)
 def load_context_chunk_from_data(id_path):
