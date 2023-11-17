@@ -62,7 +62,7 @@ def main():
     # The default embeddings generation model specified in this AMP only generates embeddings for the first 256 tokens of text.
     doc_dir = './data'
     for file in Path(doc_dir).glob(f'**/*.txt'):
-        with open(file, "r") as f: # Open file in read mode
+        with open(file, "r", encoding='utf8') as f: # Open file in read mode
             print("Generating embeddings for: %s" % file.name)
             text = f.read()
             insert_embedding(collection, os.path.abspath(file), text, text)
